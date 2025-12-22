@@ -9,7 +9,7 @@ namespace JobPortal.Infrastructure
 {
     public static class InfrastructureServiceRegisteration
     {
-        public static IServiceCollection AddInfrastructureDI(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             // Register infrastrurcture services here
 

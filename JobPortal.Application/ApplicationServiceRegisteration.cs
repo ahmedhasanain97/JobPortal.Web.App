@@ -9,7 +9,7 @@ namespace JobPortal.Application
 {
     public static class ApplicationServiceRegisteration
     {
-        public static IServiceCollection AddApplicationDI(this IServiceCollection services)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             // Register application services here
             return services;
