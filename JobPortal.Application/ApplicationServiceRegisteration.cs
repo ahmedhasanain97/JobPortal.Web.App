@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JobPortal.Application
 {
-    public static class DependencyInjection
+    public static class ApplicationServiceRegisteration
     {
         public static IServiceCollection AddApplicationDI(this IServiceCollection services)
         {
