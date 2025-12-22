@@ -1,8 +1,4 @@
-﻿using JobPortal.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace JobPortal.Infrastructure.Configurations
+﻿namespace JobPortal.Infrastructure.Configurations
 {
     internal class ApplicationUserConfigurations : IEntityTypeConfiguration<ApplicationUser>
     {
