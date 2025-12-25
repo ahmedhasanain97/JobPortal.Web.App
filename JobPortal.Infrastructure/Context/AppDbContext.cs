@@ -1,6 +1,7 @@
 ﻿namespace JobPortal.Infrastructure.Context
 {
-    public class AppDbContext : IdentityDbContext<ApplicationUser>
+
+    public class AppDbContext : IdentityDbContext<User>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -9,7 +10,7 @@
             builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly); // Apply all configurations from the current assembly
             base.OnModelCreating(builder);
 
-            builder.Entity<ApplicationUser>()
+            builder.Entity<User>()
                 .ToTable("Users");
 
             builder.Entity<IdentityRole>()

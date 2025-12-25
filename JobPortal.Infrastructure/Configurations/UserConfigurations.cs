@@ -1,8 +1,9 @@
 ﻿namespace JobPortal.Infrastructure.Configurations
 {
-    internal class ApplicationUserConfigurations : IEntityTypeConfiguration<ApplicationUser>
+    public class UserConfigurations : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
+
+        public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Property(u => u.FirstName)
                 .IsRequired()
@@ -11,6 +12,7 @@
             builder.Property(u => u.LastName)
                 .IsRequired()
                 .HasMaxLength(25);
+
         }
     }
 }
