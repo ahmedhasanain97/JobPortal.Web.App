@@ -1,8 +1,12 @@
-﻿namespace JobPortal.Infrastructure.Context
+﻿using System.Data;
+
+namespace JobPortal.Infrastructure.Context
 {
     public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+        public DbSet<Log> Logs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
