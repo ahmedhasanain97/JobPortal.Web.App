@@ -1,8 +1,13 @@
-﻿namespace JobPortal.Infrastructure.Context
+﻿using JobPortal.Application.Common.Interfaces;
+using JobPortal.Infrastructure.Identity;
+
+namespace JobPortal.Infrastructure.Context
 {
 
-    public class AppDbContext : IdentityDbContext<User>
+    public class AppDbContext : IdentityDbContext<ApplicationUser>, IAppDbContext
     {
+        public DbSet<Job> Jobs => Set<Job>();
+        public DbSet<JobSkillSet> JobsSkillSet => Set<JobSkillSet>();
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -10,7 +15,7 @@
             builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly); // Apply all configurations from the current assembly
             base.OnModelCreating(builder);
 
-            builder.Entity<User>()
+            builder.Entity<ApplicationUser>()
                 .ToTable("Users");
 
             builder.Entity<IdentityRole>()

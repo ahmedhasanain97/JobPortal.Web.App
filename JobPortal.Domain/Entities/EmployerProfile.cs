@@ -3,7 +3,6 @@
     public class EmployerProfile : AuditableEntity
     {
         public Guid Id { get; set; }
-        public User User { get; set; } = null!;
         public string UserId { get; set; } = null!;
         public EmployerType EmployerType { get; set; }
         public string DisplayName { get; set; } = null!;

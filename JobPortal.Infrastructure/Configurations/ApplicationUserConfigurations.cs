@@ -1,9 +1,11 @@
-﻿namespace JobPortal.Infrastructure.Configurations
+﻿using JobPortal.Infrastructure.Identity;
+
+namespace JobPortal.Infrastructure.Configurations
 {
-    public class UserConfigurations : IEntityTypeConfiguration<User>
+    public class ApplicationUserConfigurations : IEntityTypeConfiguration<ApplicationUser>
     {
 
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
             builder.Property(u => u.FirstName)
                 .IsRequired()

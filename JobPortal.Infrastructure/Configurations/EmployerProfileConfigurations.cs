@@ -1,4 +1,6 @@
-﻿namespace JobPortal.Infrastructure.Configurations
+﻿using JobPortal.Infrastructure.Identity;
+
+namespace JobPortal.Infrastructure.Configurations
 {
     public class EmployerProfileConfigurations : IEntityTypeConfiguration<EmployerProfile>
     {
@@ -28,11 +30,11 @@
                    .WithOne(j => j.EmployerProfile)
                    .HasForeignKey(j => j.EmployerProfileId)
                    .OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne(e => e.User)
-                   .WithOne(u => u.EmployerProfile)
-                   .HasForeignKey<EmployerProfile>(e => e.UserId)
-                   .HasPrincipalKey<User>(u => u.Id)
-                   .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne<ApplicationUser>()
+                   .WithOne()
+                   .HasForeignKey<EmployerProfile>(e => e.UserId);
+
+
 
         }
     }

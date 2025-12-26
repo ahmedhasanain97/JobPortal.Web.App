@@ -1,4 +1,6 @@
-﻿namespace JobPortal.Infrastructure.Configurations
+﻿using JobPortal.Infrastructure.Identity;
+
+namespace JobPortal.Infrastructure.Configurations
 {
     public class JobSeekerProfileConfigurations : IEntityTypeConfiguration<JobSeekerProfile>
     {
@@ -19,11 +21,9 @@
                      .HasMaxLength(2000);
             builder.HasIndex(jsp => jsp.UserId)
                    .IsUnique();
-            builder.HasOne(jsp => jsp.User)
-                   .WithOne(u => u.JobSeekerProfile)
-                   .HasForeignKey<JobSeekerProfile>(jsp => jsp.UserId)
-                   .HasPrincipalKey<User>(u => u.Id)
-                   .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne<ApplicationUser>()
+                   .WithOne()
+                   .HasForeignKey<JobSeekerProfile>(e => e.UserId);
 
         }
 
