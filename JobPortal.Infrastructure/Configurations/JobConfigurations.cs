@@ -18,7 +18,6 @@
                    .IsRequired()
                    .HasConversion<string>();
             builder.Property(j => j.ExperienceLevel)
-                   .IsRequired()
                    .HasMaxLength(100)
                    .HasConversion<string>();
             builder.Property(j => j.Jobstatus)
@@ -32,6 +31,11 @@
                    .HasColumnType("decimal(18,2)");
             builder.Property(j => j.ApplicationDeadline)
                    .IsRequired();
+            builder.HasIndex(j => j.ApplicationUserId);
+            builder.HasOne(j => j.ApplicationUser)
+                   .WithMany()
+                   .HasForeignKey(j => j.ApplicationUserId)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JobPortal.Domain.Entities
+﻿namespace JobPortal.Domain.Entities
 {
     public class Job : AuditableEntity
     {
         public Guid Id { get; set; }
-        public EmployerProfile EmployerProfile { get; set; } = null!;
-        public Guid EmployerProfileId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; } = null!;
+        public String ApplicationUserId { get; set; }
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public JobLocation JobLocation { get; set; }

@@ -1,5 +1,5 @@
 ﻿using JobPortal.Application.Common.Interfaces;
-using JobPortal.Infrastructure.Identity;
+
 
 namespace JobPortal.Infrastructure
 {

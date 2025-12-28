@@ -11,7 +11,7 @@
             builder.Property(ja => ja.Status)
                    .IsRequired()
                    .HasConversion<string>();
-            builder.HasIndex(ja => new { ja.JobId, ja.JobSeekerProfileId })
+            builder.HasIndex(ja => new { ja.JobId, ja.ApplciationUserId })
                    .IsUnique();
             builder.HasOne(ja => ja.Job)
                    .WithMany(j => j.JobApplications)

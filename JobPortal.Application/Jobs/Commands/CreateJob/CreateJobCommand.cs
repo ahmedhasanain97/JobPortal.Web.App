@@ -5,7 +5,7 @@ namespace JobPortal.Application.Jobs.Commands.CreateJob
 {
     public class CreateJobCommand : IRequest<Guid>
     {
-        public Guid EmployerProfileId { get; set; }
+        public string ApplicationUserId { get; set; }
 
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;

@@ -5,7 +5,7 @@
         public void Configure(EntityTypeBuilder<JobSeekerSkillSet> builder)
         {
             builder.ToTable("JobSeekersSkillSet");
-            builder.HasKey(jss => new { jss.JobSeekerProfileId, jss.SkillId });
+            builder.HasKey(jss => new { jss.ApplicationUserId, jss.SkillId });
 
         }
     }

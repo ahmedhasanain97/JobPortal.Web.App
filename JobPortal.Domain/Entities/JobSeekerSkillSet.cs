@@ -8,11 +8,11 @@ namespace JobPortal.Domain.Entities
 {
     public class JobSeekerSkillSet : AuditableEntity
     {
-        public JobSeekerProfile JobSeekerProfile { get; set; } = null!;
-        public Guid JobSeekerProfileId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; } = null!;
+        public string ApplicationUserId { get; set; }
         public Skill Skill { get; set; } = null!;
         public Guid SkillId { get; set; }
         public int YearsOfExperience { get; set; }
-   
+
     }
 }

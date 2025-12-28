@@ -1,4 +1,4 @@
-﻿using JobPortal.Infrastructure.Identity;
+﻿
 
 namespace JobPortal.Infrastructure.Configurations
 {
@@ -14,6 +14,11 @@ namespace JobPortal.Infrastructure.Configurations
             builder.Property(u => u.LastName)
                 .IsRequired()
                 .HasMaxLength(25);
+            builder.Property(u => u.CompanyName)
+                .HasMaxLength(50);
+            builder.Property(u => u.UserType)
+                .IsRequired()
+                .HasConversion<string>();
 
         }
     }

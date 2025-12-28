@@ -1,6 +1,5 @@
 ﻿using JobPortal.Application.Common.Interfaces;
 using JobPortal.Domain.Entities;
-using JobPortal.Domain.Enums;
 using MediatR;
 
 namespace JobPortal.Application.Jobs.Commands.CreateJob
@@ -16,7 +15,7 @@ namespace JobPortal.Application.Jobs.Commands.CreateJob
         {
             var job = new Job
             {
-                EmployerProfileId = request.EmployerProfileId,
+                ApplicationUserId = request.ApplicationUserId,
                 Title = request.Title,
                 Description = request.Description,
                 JobLocation = request.JobLocation,
