@@ -1,6 +1,8 @@
 ﻿using JobPortal.Application.Common.Interfaces;
 using JobPortal.Infrastructure.Identity;
 
+using System.Data;
+
 namespace JobPortal.Infrastructure.Context
 {
 
@@ -9,6 +11,8 @@ namespace JobPortal.Infrastructure.Context
         public DbSet<Job> Jobs => Set<Job>();
         public DbSet<JobSkillSet> JobsSkillSet => Set<JobSkillSet>();
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+        public DbSet<Log> Logs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

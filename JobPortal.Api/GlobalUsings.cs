@@ -1,3 +1,10 @@
 ﻿global using JobPortal.Infrastructure;
 global using JobPortal.Application;
 global using Microsoft.AspNetCore.Mvc.Filters;
+global using JobPortal.Api;
+global using Serilog;
+global using Microsoft.AspNetCore.Mvc;
+global using Serilog.Sinks.MSSqlServer;
+global using System.Data;
+global using Serilog.Context;
+global using JobPortal.Api.Filters;
