@@ -1,12 +1,16 @@
-﻿using System.Data;
+﻿using JobPortal.Application.Common.Interfaces;
 
 namespace JobPortal.Infrastructure.Context
 {
-    public class AppDbContext : IdentityDbContext<ApplicationUser>
-    {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
+    public class AppDbContext : IdentityDbContext<ApplicationUser>, IAppDbContext
+    {
+        public DbSet<Job> Jobs => Set<Job>();
+        public DbSet<JobSkillSet> JobsSkillSet => Set<JobSkillSet>();
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<Log> Logs { get; set; }
+        public DbSet<Module> Modules { get; set; }
+        public DbSet<RoleAccessModule> RoleAccessModules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
