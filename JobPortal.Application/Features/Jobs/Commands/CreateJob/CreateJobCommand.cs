@@ -1,7 +1,7 @@
 ﻿using JobPortal.Domain.Enums;
 using MediatR;
 
-namespace JobPortal.Application.Jobs.Commands.CreateJob
+namespace JobPortal.Application.Features.Jobs.Commands.CreateJob
 {
     public class CreateJobCommand : IRequest<Guid>
     {
@@ -12,7 +12,7 @@ namespace JobPortal.Application.Jobs.Commands.CreateJob
         public JobLocation JobLocation { get; set; }
         public JobType JobType { get; set; }
         public JobStatus JobStatus { get; set; }
-        public String? ExperienceLevel { get; set; }
+        public string? ExperienceLevel { get; set; }
 
         public double SalaryFrom { get; set; }
         public double SalaryTo { get; set; }

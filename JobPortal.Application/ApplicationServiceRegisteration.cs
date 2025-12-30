@@ -1,4 +1,8 @@
-﻿using JobPortal.Application.Jobs.Commands.CreateJob;
+﻿using FluentValidation;
+using JobPortal.Application.Features.ApplicationUsers.Commands.RegisterUser;
+using JobPortal.Application.Features.Jobs.Commands.CreateJob;
+using System.Reflection;
+
 
 namespace JobPortal.Application
 {
@@ -11,7 +15,12 @@ namespace JobPortal.Application
                 cfg.RegisterServicesFromAssembly(
                     typeof(CreateJobCommand).Assembly
                 );
+                cfg.RegisterServicesFromAssembly(
+                    typeof(RegisterUserCommand).Assembly);
             });
+            #region Fluent Validation
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            #endregion
             return services;
         }
     }
