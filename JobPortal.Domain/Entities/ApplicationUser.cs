@@ -6,7 +6,6 @@ namespace JobPortal.Domain.Entities
     {
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
-        public UserType UserType { get; set; }
         public string? CompanyName { get; set; }
         public string? CVURL { get; set; }
     }

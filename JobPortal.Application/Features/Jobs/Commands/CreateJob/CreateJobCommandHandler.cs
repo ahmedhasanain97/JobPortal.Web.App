@@ -1,15 +1,15 @@
-﻿using JobPortal.Application.Common.Interfaces;
+﻿using JobPortal.Application.Abstractions;
 using JobPortal.Domain.Entities;
 using MediatR;
 
-namespace JobPortal.Application.Jobs.Commands.CreateJob
+namespace JobPortal.Application.Features.Jobs.Commands.CreateJob
 {
     public class CreateJobCommandHandler : IRequestHandler<CreateJobCommand, Guid>
     {
-        private readonly IAppDbContext _context;
-        public CreateJobCommandHandler(IAppDbContext context)
+        private readonly IUnitOfWork _unitOfWork;
+        public CreateJobCommandHandler(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
         public async Task<Guid> Handle(CreateJobCommand request, CancellationToken cancellationToken)
         {
@@ -27,8 +27,10 @@ namespace JobPortal.Application.Jobs.Commands.CreateJob
                 Jobstatus = request.JobStatus,
 
             };
-            _context.Jobs.Add(job);
-            await _context.SaveChangesAsync(cancellationToken);
+
+            var repo = _unitOfWork.Repository<Job>();
+            await repo.PostAsync(job);
+            await _unitOfWork.SaveChangesAsync();
             return job.Id;
         }
     }

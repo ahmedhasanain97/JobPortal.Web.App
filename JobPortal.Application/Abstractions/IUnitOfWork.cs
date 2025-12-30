@@ -1,0 +1,8 @@
+﻿namespace JobPortal.Application.Abstractions
+{
+    public interface IUnitOfWork
+    {
+        Task<int> SaveChangesAsync();
+        IAsyncRepository<T> Repository<T>() where T : class;
+    }
+}

@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
+
 namespace JobPortal.Api.Bases
 {
     [Route("api/[controller]")]
@@ -6,9 +8,10 @@ namespace JobPortal.Api.Bases
     public class BaseController : ControllerBase
     {
         [HttpGet]
+        [Authorize]
         public IActionResult Test()
         {
-            throw new NotImplementedException("this is not implemented yet");
+            return Ok("Hello from Authorized controller.");
         }
     }
 }

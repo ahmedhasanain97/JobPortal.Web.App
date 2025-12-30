@@ -1,0 +1,148 @@
+﻿using System.Linq.Expressions;
+
+namespace JobPortal.Application.Abstractions
+{
+    public interface IAsyncRepository<T> where T : class
+    {
+        #region Get
+        /// <summary>
+        /// Retrieves all elements from a table without including navigation properties, paging, or ordering.
+        /// </summary>
+        /// <returns>An IQueryable representing all elements in the table.</returns>
+        IQueryable<T> GetAll();
+
+        /// <summary>
+        /// Retrieves a queryable collection of elements from a table with optional filtering, inclusion of navigation properties, and ordering.
+        /// </summary>
+        /// <param name="predicate">Optional predicate for filtering the results.</param>
+        /// <param name="includeNavigationProperties">Optional delegate to include navigation properties in the query.</param>
+        /// <param name="orderBy">Optional expression to specify ordering.</param>
+        /// <param name="orderByDirection">Optional enum indicating ordering direction.</param>
+        /// <returns>An IQueryable representing the collection of elements with optional filtering, navigation properties, and ordering applied.</returns>
+        IQueryable<T> GetAll(
+            Expression<Func<T, bool>>? predicate = null,
+            Func<IQueryable<T>, IQueryable<T>>? includeNavigationProperties = null,
+            Expression<Func<T, object>>? orderBy = null,
+            OrderBy? orderByDirection = OrderBy.Ascending);
+
+
+        /// <summary>
+        /// Retrieves a queryable collection of elements from a table with optional navigation property inclusion and ordering.
+        /// </summary>
+        /// <param name="includeNavigationProperties">Optional delegate to include navigation properties in the query.</param>
+        /// <param name="orderBy">Optional expression to specify ordering.</param>
+        /// <param name="orderByDirection">Optional string indicating ordering direction ('Ascending' or 'Descending').</param>
+        /// <returns>An IQueryable representing the collection of elements with optional navigation properties and ordering applied.</returns>
+        IQueryable<T> GetAll(
+            Func<IQueryable<T>, IQueryable<T>>? includeNavigationProperties = null,
+            Expression<Func<T, object>>? orderBy = null,
+            OrderBy? orderByDirection = OrderBy.Ascending);
+
+
+        /// <summary>
+        /// Retrieves a queryable collection of elements from a table with optional navigation property inclusion, paging, and ordering.
+        /// </summary>
+        /// <param name="pageNumber">Page number for paging.</param>
+        /// <param name="pageSize">Number of elements per page for paging.</param>
+        /// <param name="includeNavigationProperties">Optional delegate to include navigation properties in the query.</param>
+        /// <param name="orderBy">Optional expression to specify ordering.</param>
+        /// <param name="orderByDirection">Optional string indicating ordering direction ('Ascending' or 'Descending').</param>
+        /// <returns>An IQueryable representing the filtered, paged, and ordered collection of elements.</returns>
+        IQueryable<T> GetAll(
+            int pageNumber = 0,
+            int pageSize = 0,
+            Func<IQueryable<T>, IQueryable<T>>? includeNavigationProperties = null,
+            Expression<Func<T, object>>? orderBy = null,
+            OrderBy? orderByDirection = OrderBy.Ascending);
+        #endregion
+
+        #region Search
+        /// <summary>
+        /// Retrieves an entity by its primary key.
+        /// </summary>
+        /// <param name="id">The primary key value of the entity to retrieve.</param>
+        /// <returns>The entity with the specified primary key, or null if not found.</returns>
+        T? FindById(int id);
+
+        /// <summary>
+        /// Asynchronously retrieves an entity by its primary key.
+        /// </summary>
+        /// <param name="id">The primary key value of the entity to retrieve.</param>
+        /// <returns>
+        /// A task representing the asynchronous operation. The task result contains the entity with the specified primary key,
+        /// or null if not found.
+        /// </returns>
+        Task<T?> FindByIdAsync(int id);
+
+        /// <summary>
+        /// Retrieves a single entity from a table based on the specified predicate, with optional inclusion of navigation properties.
+        /// </summary>
+        /// <param name="predicate">The predicate used to filter the entity.</param>
+        /// <param name="includeNavigationProperties">Optional delegate to include navigation properties in the query.</param>
+        /// <returns>The entity matching the predicate, or null if not found.</returns>
+        T? Find(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>>? includeNavigationProperties = null);
+
+        /// <summary>
+        /// Asynchronously retrieves a single entity from a table based on the specified predicate, with optional inclusion of navigation properties.
+        /// </summary>
+        /// <param name="predicate">The predicate used to filter the entity.</param>
+        /// <param name="includeNavigationProperties">Optional delegate to include navigation properties in the query.</param>
+        /// <returns>A task representing the asynchronous operation. The task result contains the entity matching the predicate, or null if not found.</returns>
+        Task<T?> FindAsync(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>>? includeNavigationProperties = null);
+
+        /// <summary>
+        /// Checks if any entities in the database context satisfy the specified predicate.
+        /// </summary>
+        /// <param name="predicate">A predicate to match entities against.</param>
+        /// <returns>True if any matching entity exists, otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the predicate is null.</exception>
+        /// <exception cref="DataAccessErrorException">Thrown when an error occurs during database access.</exception>
+        bool AnyMatching(Expression<Func<T, bool>> predicate);
+
+        /// <summary>
+        /// Asynchronously checks if any entities in the database context satisfy the specified predicate.
+        /// </summary>
+        /// <param name="predicate">A predicate to match entities against.</param>
+        /// <returns>
+        /// A task representing the asynchronous operation. The task result is true if any matching entity exists, otherwise false.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">Thrown when the predicate is null.</exception>
+        /// <exception cref="DataAccessErrorException">Thrown when an error occurs during database access.</exception>
+        Task<bool> AnyMatchingAsync(Expression<Func<T, bool>> predicate);
+        #endregion
+
+        #region Filtering
+        /// <summary>
+        /// Filters and customizes a queryable collection of elements from a table based on the specified predicate,
+        /// with optional inclusion of navigation properties and ordering.
+        /// </summary>
+        /// <param name="predicate">The predicate used to filter the collection.</param>
+        /// <param name="includeNavigationProperties">Optional delegate to include navigation properties in the query.</param>
+        /// <param name="orderBy">Optional expression to specify ordering.</param>
+        /// <param name="orderByDirection">Optional enum indicating ordering direction.</param>
+        /// <returns>An IQueryable representing the filtered and customized collection of elements.</returns>
+        IQueryable<T> Filter(
+            Expression<Func<T, bool>> predicate,
+            Func<IQueryable<T>, IQueryable<T>>? includeNavigationProperties = null,
+            Expression<Func<T, object>>? orderBy = null,
+            OrderBy? orderByDirection = OrderBy.Ascending);
+        #endregion
+
+        #region Post
+        Task<T> PostAsync(T entity);
+        #endregion
+
+        #region Delete
+        void Delete(T entity);
+        #endregion
+
+        #region Attach
+        void Attach(T entity);
+        #endregion
+
+        #region Count
+        int Count();
+        Task<int> CountAsync();
+        #endregion
+    }
+}
