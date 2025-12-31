@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using JobPortal.Api.Authorization.Attributes;
 
 namespace JobPortal.Api.Controllers
 {
@@ -7,5 +6,19 @@ namespace JobPortal.Api.Controllers
     [ApiController]
     public class JobSeekerController : ControllerBase
     {
+
+        [HttpGet("profile")]
+        [HasPermission("JobSeeker", "Read")]
+        public IActionResult GetProfile()
+        {
+            return Ok("This is the Job Seeker profile endpoint.");
+        }
+
+        [HttpPost("apply")]
+        [HasPermission("JobSeeker", "Write")]
+        public IActionResult ApplyForJob()
+        {
+            return Ok("Job application submitted successfully.");
+        }
     }
 }

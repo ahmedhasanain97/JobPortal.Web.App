@@ -13,7 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Mini-Twitter.API", Version = "v1" });
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "JobPortal.API", Version = "v1" });
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -23,24 +23,6 @@ builder.Services.AddSwaggerGen(options =>
         BearerFormat = "JWT",
         Scheme = "Bearer"
     });
-
-    //    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    //{
-    //    {
-    //        new OpenApiSecurityScheme
-    //        {
-    //            Reference = new Microsoft.OpenApi.Models.OpenApiReference
-    //            {
-    //                Type = ReferenceType.SecurityScheme,
-    //                Id = "Bearer"
-    //            },
-    //            Scheme = "Bearer",
-    //            Name = "Authorization",
-    //            In = ParameterLocation.Header
-    //        },
-    //        Array.Empty<string>() // scopes for JWT, usually empty
-    //    }
-    //});
 
 
     options.AddSecurityRequirement(document =>
@@ -75,6 +57,8 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 }
 app.UseStaticFiles();
 app.UseHttpsRedirection();
+app.UseRouting();
+app.UseCors("Frontend");
 app.UseAuthentication();
 app.UseAuthorization();
 

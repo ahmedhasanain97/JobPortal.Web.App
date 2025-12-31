@@ -25,6 +25,20 @@ namespace JobPortal.Api
                     })
                 .CreateLogger();
             #endregion
+            #region Cors
+            var origins = configuration
+                .GetSection("Cors:Origins")
+                .Get<string[]>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Frontend", builder =>
+                {
+                    builder.WithOrigins(origins!)
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+            });
+            #endregion
             #region Authentication  
             services.AddAuthentication(options =>
             {
@@ -48,6 +62,7 @@ namespace JobPortal.Api
                     };
                 });
             #endregion
+            
             return services;
         }
     }
