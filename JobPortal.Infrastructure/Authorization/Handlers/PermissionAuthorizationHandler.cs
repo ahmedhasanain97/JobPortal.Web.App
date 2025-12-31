@@ -26,9 +26,13 @@ namespace JobPortal.Infrastructure.Authorization.Handlers
             // role checks
             var roleClaim = context.User.Claims.Where(claim => claim.Type == ClaimTypes.Role).FirstOrDefault()?.Value;
             if (roleClaim == "Admin")
+            { 
                 context.Succeed(requirement);
+                return;
+            }
 
-            if (roleClaim == null || !await _userManager.IsInRoleAsync(user, roleClaim))
+
+                if (roleClaim == null || !await _userManager.IsInRoleAsync(user, roleClaim))
                 return;
 
             // role access checks
