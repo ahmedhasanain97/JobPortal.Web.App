@@ -28,7 +28,8 @@ namespace JobPortal.Infrastructure.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Name, user.UserName ?? "")
+                new Claim(ClaimTypes.Name, user.UserName ?? ""),
+                new Claim("UserId", user.Id) // added UserId as custom claim
             }.Union(roleClaims)
             .Union(userClaims);
 
