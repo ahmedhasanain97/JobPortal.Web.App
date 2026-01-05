@@ -1,5 +1,6 @@
 ﻿using JobPortal.Application.Common.Interfaces;
 using JobPortal.Application.Common.Models;
+using JobPortal.Application.Exceptions;
 
 namespace JobPortal.Infrastructure.Services
 {
@@ -25,13 +26,7 @@ namespace JobPortal.Infrastructure.Services
         {
             var existingUser = await _userManager.FindByEmailAsync(email);
             if (existingUser != null)
-            {
-                return new AuthDto
-                {
-                    IsAuthenticated = false,
-                    Message = "Email already registered"
-                };
-            }
+                return new AuthDto { Message = "Email already Registerd" };
 
             var user = new ApplicationUser
             {
@@ -45,12 +40,7 @@ namespace JobPortal.Infrastructure.Services
 
             if (!result.Succeeded)
             {
-                return new AuthDto
-                {
-                    IsAuthenticated = false,
-                    Message = string.Join(", ",
-                        result.Errors.Select(e => e.Description))
-                };
+                throw new ValidationException(result.Errors.ToDictionary(e => e.Code, e => new[] { e.Description }));
             }
 
             // todo: add default role and then implement role management to allow user to choose his role
@@ -62,7 +52,6 @@ namespace JobPortal.Infrastructure.Services
             {
                 IsAuthenticated = true,
                 email = user.Email,
-                //Roles = roles,
                 Token = token
             };
         }
@@ -73,11 +62,12 @@ namespace JobPortal.Infrastructure.Services
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
-                return new AuthDto { IsAuthenticated = false };
+                return new AuthDto { Message = "Invalid User or Password" };
 
             var valid = await _userManager.CheckPasswordAsync(user, password);
             if (!valid)
-                return new AuthDto { IsAuthenticated = false };
+                return new AuthDto { Message = "Invalid Email or Password" };
+
 
             var token = await _tokenService.GenerateTokenAsync(user, _userManager);
 
@@ -85,7 +75,6 @@ namespace JobPortal.Infrastructure.Services
             {
                 IsAuthenticated = true,
                 email = user.Email!,
-                //Roles = roles,
                 Token = token
             };
         }

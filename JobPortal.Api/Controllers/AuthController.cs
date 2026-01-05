@@ -33,10 +33,6 @@ namespace JobPortal.Api.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<AuthDto>> Login([FromBody] LoginRequestDto requestDto)
         {
-            //var user = User.Identity;
-            //var claims = User.Claims.Where(c => c.Type == "userId").FirstOrDefault()?.Value;
-            //var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
-
             var result = await _mediator.Send(new LoginCommand(requestDto.Email, requestDto.Password));
             if (!result.IsAuthenticated)
             {

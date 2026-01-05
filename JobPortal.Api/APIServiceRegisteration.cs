@@ -7,6 +7,8 @@ namespace JobPortal.Api
     {
         public static IServiceCollection AddApiServicesRegisteration(this IServiceCollection services, IConfiguration configuration)
         {
+            #region ServiceRegisteration
+            #endregion
             #region Serilog
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
@@ -62,7 +64,7 @@ namespace JobPortal.Api
                     };
                 });
             #endregion
-            
+
             return services;
         }
     }

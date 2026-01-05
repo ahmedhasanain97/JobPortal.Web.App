@@ -1,3 +1,4 @@
+using JobPortal.Api.Middlewares;
 using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,6 +41,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration)
     .AddApplicationServices()
     .AddApiServicesRegisteration(builder.Configuration);
 
+
 // Serilog as default logger
 builder.Host.UseSerilog();
 
@@ -59,9 +61,9 @@ app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("Frontend");
+
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 app.Run();
