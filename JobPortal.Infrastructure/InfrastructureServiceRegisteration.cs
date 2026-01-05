@@ -21,8 +21,6 @@ namespace JobPortal.Infrastructure
             services.AddScoped<ITokenService, JwtTokenService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            // AuthorizationPolicy Handlers
-            //services.AddAuthorizationCore();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 

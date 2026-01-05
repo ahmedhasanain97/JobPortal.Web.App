@@ -1,8 +1,5 @@
 ﻿using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace JobPortal.Application.Common.Behaviours
 {
@@ -18,10 +15,20 @@ namespace JobPortal.Application.Common.Behaviours
         {
             var context = new ValidationContext<TRequest>(request);
             var validationResults = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(context, cancellationToken)));
-            var failures = validationResults.Where(r => r.Errors.Any()).SelectMany(r => r.Errors).ToList();
-            if (failures.Count != 0)
+            var failures = validationResults
+                            .SelectMany(r => r.Errors)
+                            .Where(f => f != null)
+                            .GroupBy(
+                                x => x.PropertyName,
+                                x => x.ErrorMessage
+                            )
+                            .ToDictionary(
+                                g => g.Key,
+                                g => g.ToArray()
+                            );
+            if (failures.Any())
             {
-                throw new ValidationException(failures);
+                throw new JobPortal.Application.Exceptions.ValidationException(failures);
             }
             return await next();
         }

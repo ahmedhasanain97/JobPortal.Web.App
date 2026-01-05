@@ -28,15 +28,15 @@ namespace JobPortal.Infrastructure.Authorization.Handlers
 
 
 
-                if (roleClaim == null || !await _userManager.IsInRoleAsync(user, roleClaim))
+            if (string.IsNullOrEmpty(roleClaim) || !await _userManager.IsInRoleAsync(user, roleClaim))
                 return;
 
 
-                if (roleClaim == "Admin")
-                {
-                    context.Succeed(requirement);
-                    return;
-                }
+            if (roleClaim == "Admin")
+            {
+                context.Succeed(requirement);
+                return;
+            }
 
             // role access checks
             var roleAccess = _context.RoleAccessModules

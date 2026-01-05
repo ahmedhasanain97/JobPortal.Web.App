@@ -11,8 +11,6 @@ namespace JobPortal.Infrastructure.Authorization.Policy
         public Task<AuthorizationPolicy?> GetFallbackPolicyAsync()
             => Task.FromResult<AuthorizationPolicy?>(null);
 
-        // we are inside the policy provider with input "JobSeeker.Read"
-        // now follow the request
         public Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
         {
             if (string.IsNullOrWhiteSpace(policyName) || !policyName.Contains("."))
