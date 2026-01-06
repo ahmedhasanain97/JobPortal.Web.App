@@ -1,6 +1,9 @@
-﻿using JobPortal.Application.Common.Interfaces;
+﻿using JobPortal.Application.Abstractions;
+using JobPortal.Application.Common.Interfaces;
 using JobPortal.Application.Common.Models;
+using JobPortal.Application.Errors;
 using JobPortal.Application.Exceptions;
+
 
 namespace JobPortal.Infrastructure.Services
 {
@@ -17,7 +20,7 @@ namespace JobPortal.Infrastructure.Services
             _tokenService = tokenService;
         }
 
-        public async Task<AuthDto> RegisterAsync(
+        public async Task<Result> RegisterAsync(
            string firstName,
            string lastName,
            string username,
@@ -26,7 +29,7 @@ namespace JobPortal.Infrastructure.Services
         {
             var existingUser = await _userManager.FindByEmailAsync(email);
             if (existingUser != null)
-                return new AuthDto { Message = "Email already Registerd" };
+                return AuthErrors.AlreadyRegistered;
 
             var user = new ApplicationUser
             {
@@ -48,35 +51,34 @@ namespace JobPortal.Infrastructure.Services
 
             var token = await _tokenService.GenerateTokenAsync(user, _userManager);
 
-            return new AuthDto
+            return Result<AuthDto>.Success(new AuthDto
             {
                 IsAuthenticated = true,
                 email = user.Email,
                 Token = token
-            };
+            });
         }
 
-        public async Task<AuthDto> LoginAsync(
+        public async Task<Result> LoginAsync(
             string email,
             string password)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
-                return new AuthDto { Message = "Invalid User or Password" };
+                return AuthErrors.InvalidUserOrPassword;
 
             var valid = await _userManager.CheckPasswordAsync(user, password);
             if (!valid)
-                return new AuthDto { Message = "Invalid Email or Password" };
-
+                return AuthErrors.WrongPassword;
 
             var token = await _tokenService.GenerateTokenAsync(user, _userManager);
 
-            return new AuthDto
+            return Result<AuthDto>.Success(new AuthDto
             {
                 IsAuthenticated = true,
                 email = user.Email!,
                 Token = token
-            };
+            });
         }
     }
 }

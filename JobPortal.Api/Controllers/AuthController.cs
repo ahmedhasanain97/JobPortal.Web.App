@@ -22,11 +22,8 @@ namespace JobPortal.Api.Controllers
         public async Task<ActionResult<AuthDto>> Register([FromBody] RegisterRequestDto requestDto)
         {
             var result = await _mediator.Send(new RegisterUserCommand(requestDto.FirstName, requestDto.LastName, requestDto.Username, requestDto.Email, requestDto.Password));
-
-            if (!result.IsAuthenticated)
-            {
+            if (result.IsFailure)
                 return BadRequest(result);
-            }
             return Ok(result);
         }
 
@@ -34,10 +31,8 @@ namespace JobPortal.Api.Controllers
         public async Task<ActionResult<AuthDto>> Login([FromBody] LoginRequestDto requestDto)
         {
             var result = await _mediator.Send(new LoginCommand(requestDto.Email, requestDto.Password));
-            if (!result.IsAuthenticated)
-            {
+            if (result.IsFailure)
                 return BadRequest(result);
-            }
             return Ok(result);
         }
     }
