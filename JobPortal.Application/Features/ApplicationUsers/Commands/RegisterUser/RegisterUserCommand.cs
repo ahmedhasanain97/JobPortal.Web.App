@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using JobPortal.Application.Abstractions;
+using MediatR;
 
 namespace JobPortal.Application.Features.ApplicationUsers.Commands.RegisterUser
 {
@@ -7,5 +8,5 @@ namespace JobPortal.Application.Features.ApplicationUsers.Commands.RegisterUser
         string LastName,
         string Username,
         string Email,
-        string Password) : IRequest<AuthDto>;
+        string Password) : IRequest<Result>;
 }

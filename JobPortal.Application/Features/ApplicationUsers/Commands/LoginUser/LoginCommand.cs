@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using JobPortal.Application.Abstractions;
+using MediatR;
 
 namespace JobPortal.Application.Features.ApplicationUsers.Commands.LoginUser
 {
@@ -6,5 +7,5 @@ namespace JobPortal.Application.Features.ApplicationUsers.Commands.LoginUser
     (
     string Email,
     string Password
-    ) : IRequest<AuthDto>;
+    ) : IRequest<Result>;
 }
