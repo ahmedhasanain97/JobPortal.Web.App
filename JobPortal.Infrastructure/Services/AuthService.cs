@@ -1,8 +1,6 @@
 ﻿using JobPortal.Application.Abstractions;
 using JobPortal.Application.Common.Interfaces;
 using JobPortal.Application.Common.Models;
-using JobPortal.Application.Errors;
-using JobPortal.Application.Exceptions;
 
 
 namespace JobPortal.Infrastructure.Services
@@ -19,17 +17,18 @@ namespace JobPortal.Infrastructure.Services
             _userManager = userManager;
             _tokenService = tokenService;
         }
-
-        public async Task<Result> RegisterAsync(
+        #region Register 
+        public async Task<Result<AuthDto>> RegisterAsync(
            string firstName,
            string lastName,
            string username,
            string email,
            string password)
         {
+
             var existingUser = await _userManager.FindByEmailAsync(email);
             if (existingUser != null)
-                return AuthErrors.AlreadyRegistered;
+                return Result.Failure<AuthDto>(Error.BadRequest("Email is Already Registered."));
 
             var user = new ApplicationUser
             {
@@ -43,7 +42,11 @@ namespace JobPortal.Infrastructure.Services
 
             if (!result.Succeeded)
             {
-                throw new ValidationException(result.Errors.ToDictionary(e => e.Code, e => new[] { e.Description }));
+                var errorMessage = string.Join(
+                    ", ",
+                    result.Errors.Select(e => e.Description)
+                );
+                return Result.Failure<AuthDto>(Error.Validation(errorMessage));
             }
 
             // todo: add default role and then implement role management to allow user to choose his role
@@ -58,27 +61,30 @@ namespace JobPortal.Infrastructure.Services
                 Token = token
             });
         }
+        #endregion
 
-        public async Task<Result> LoginAsync(
+        #region Login
+        public async Task<Result<AuthDto>> LoginAsync(
             string email,
             string password)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
-                return AuthErrors.InvalidUserOrPassword;
+                return Result.Failure<AuthDto>(Error.BadRequest("Invalid Email or Password"));
 
             var valid = await _userManager.CheckPasswordAsync(user, password);
             if (!valid)
-                return AuthErrors.WrongPassword;
+                return Result.Failure<AuthDto>(Error.BadRequest("Invalid Email or Password"));
 
             var token = await _tokenService.GenerateTokenAsync(user, _userManager);
 
-            return Result<AuthDto>.Success(new AuthDto
+            return new AuthDto
             {
                 IsAuthenticated = true,
                 email = user.Email!,
                 Token = token
-            });
+            };
         }
+        #endregion
     }
 }

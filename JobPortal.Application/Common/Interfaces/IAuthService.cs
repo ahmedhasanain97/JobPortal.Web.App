@@ -4,14 +4,14 @@ namespace JobPortal.Application.Common.Interfaces
 {
     public interface IAuthService
     {
-        Task<Result> RegisterAsync(
+        Task<Result<AuthDto>> RegisterAsync(
         string firstName,
         string lastName,
         string username,
         string email,
         string password);
 
-        Task<Result> LoginAsync(
+        Task<Result<AuthDto>> LoginAsync(
             string email,
             string password);
     }
