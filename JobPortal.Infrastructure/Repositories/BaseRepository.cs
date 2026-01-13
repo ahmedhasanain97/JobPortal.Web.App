@@ -279,17 +279,23 @@ namespace JobPortal.Infrastructure.Repositories
         public void Delete(T entity)
         {
             if (entity is null)
-                throw new ArgumentNullException(nameof(entity), "Entity cannot be null!");
+                throw new ArgumentNullException(nameof(entity));
 
             try
             {
-                _dbSet.Remove(entity);
+                if (entity is AuditableEntity auditableEntity)
+                {
+                    auditableEntity.SoftDelete();
+                    _dbSet.Update(entity);
+                }
+                else
+                {
+                    _dbSet.Remove(entity);
+                }
             }
-            catch (Exception ex) when (ex is DbUpdateException
-                                    || ex is InvalidOperationException
-                                    || ex is Exception)
+            catch (DbUpdateException ex)
             {
-                throw new DataFailureException(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                throw new DataFailureException(ex.InnerException?.Message ?? ex.Message);
             }
         }
         #endregion

@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
+    <Folder Include="Features\ApplicationUsers\Queries\GetUserRoleModulesAccess\" />
     <Folder Include="Validators\" />
   </ItemGroup>
 

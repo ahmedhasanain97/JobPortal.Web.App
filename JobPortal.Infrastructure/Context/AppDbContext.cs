@@ -1,4 +1,7 @@
-﻿namespace JobPortal.Infrastructure.Context
+﻿using System.Linq.Expressions;
+
+
+namespace JobPortal.Infrastructure.Context
 {
 
     public class AppDbContext : IdentityDbContext<ApplicationUser>
@@ -36,6 +39,20 @@
 
             builder.Entity<IdentityUserToken<string>>()
                 .ToTable("UserTokens");
+            foreach (var entityType in builder.Model.GetEntityTypes())
+            {
+                if (typeof(ISoftDeletable).IsAssignableFrom(entityType.ClrType))
+                {
+                    var parameter = Expression.Parameter(entityType.ClrType, "e");
+                    var property = Expression.Property(parameter, nameof(ISoftDeletable.IsDeleted));
+                    var condition = Expression.Equal(property, Expression.Constant(false));
+                    var lambda = Expression.Lambda(condition, parameter);
+
+                    builder.Entity(entityType.ClrType)
+                           .HasQueryFilter(lambda);
+                }
+            }
+            base.OnModelCreating(builder);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -52,6 +69,12 @@
                     case EntityState.Modified:
                         entry.Entity.ModifiedDate = DateTime.UtcNow;
                         break;
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Modified;
+                        entry.Entity.IsDeleted = true;
+                        entry.Entity.DeletedAt = DateTime.UtcNow;
+                        break;
+
                 }
             }
 
