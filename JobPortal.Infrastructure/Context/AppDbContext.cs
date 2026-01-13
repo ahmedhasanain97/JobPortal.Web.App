@@ -52,7 +52,6 @@ namespace JobPortal.Infrastructure.Context
                            .HasQueryFilter(lambda);
                 }
             }
-            base.OnModelCreating(builder);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
