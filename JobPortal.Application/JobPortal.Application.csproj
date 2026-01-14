@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Features\ApplicationUsers\Queries\GetUserRoleModulesAccess\" />
+    <Folder Include="Services\" />
     <Folder Include="Validators\" />
   </ItemGroup>
 

@@ -2,7 +2,7 @@
 
 namespace JobPortal.Application.Abstractions
 {
-    public interface IAsyncRepository<T> where T : class
+    public interface IAsyncRepository<T, in TId> where T : class
     {
         #region Get
         /// <summary>
@@ -62,7 +62,7 @@ namespace JobPortal.Application.Abstractions
         /// </summary>
         /// <param name="id">The primary key value of the entity to retrieve.</param>
         /// <returns>The entity with the specified primary key, or null if not found.</returns>
-        T? FindById(int id);
+        T? FindById(TId id);
 
         /// <summary>
         /// Asynchronously retrieves an entity by its primary key.
@@ -72,7 +72,7 @@ namespace JobPortal.Application.Abstractions
         /// A task representing the asynchronous operation. The task result contains the entity with the specified primary key,
         /// or null if not found.
         /// </returns>
-        Task<T?> FindByIdAsync(int id);
+        Task<T?> FindByIdAsync(TId id);
 
         /// <summary>
         /// Retrieves a single entity from a table based on the specified predicate, with optional inclusion of navigation properties.

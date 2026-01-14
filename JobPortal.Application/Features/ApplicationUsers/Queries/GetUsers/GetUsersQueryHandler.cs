@@ -14,7 +14,7 @@ namespace JobPortal.Application.Features.ApplicationUsers.Queries.GetUsers
 
         public async Task<Result<PaginatedResult<UserDto>>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
-            var repo = _unitOfWork.Repository<ApplicationUser>();
+            var repo = _unitOfWork.Repository<ApplicationUser, string>();
             var query = repo.GetAll().Select(u => new UserDto
             {
                 Id = u.Id,

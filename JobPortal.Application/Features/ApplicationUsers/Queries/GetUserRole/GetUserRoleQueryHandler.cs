@@ -1,6 +1,4 @@
-﻿using JobPortal.Domain.Entities;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace JobPortal.Application.Features.ApplicationUsers.Queries.GetUserRole
 {
@@ -18,9 +16,8 @@ namespace JobPortal.Application.Features.ApplicationUsers.Queries.GetUserRole
         {
             var user = await _userManager.FindByIdAsync(request.Id);
             if (user == null)
-            {
                 return Result.Failure<UserRoleDto>(Error.NotFound("User Not Found"));
-            }
+
             var roles = await _userManager.GetRolesAsync(user);
             return Result.Success(new UserRoleDto
             {

@@ -16,8 +16,8 @@ namespace JobPortal.Application.Features.ApplicationUsers.Queries.GetUserById
         }
         public async Task<Result<UserDto>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            var repo = _unitOfWork.Repository<ApplicationUser>();
-            var user = await repo.FindAsync(u => u.Id == request.userId);
+            var repo = _unitOfWork.Repository<ApplicationUser, string>();
+            var user = await repo.FindByIdAsync(request.userId);
             if (user == null)
                 return Result.Failure<UserDto>(Error.NotFound("User Not Found"));
             return new UserDto

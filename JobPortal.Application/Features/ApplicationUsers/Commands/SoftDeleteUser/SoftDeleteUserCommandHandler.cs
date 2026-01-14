@@ -9,29 +9,26 @@ namespace JobPortal.Application.Features.ApplicationUsers.Commands.SoftDeleteUse
 {
     public class SoftDeleteUserCommandHandler : IRequestHandler<SoftDeleteUserCommand, Result>
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        public SoftDeleteUserCommandHandler(UserManager<ApplicationUser> userManager)
+        private readonly IUnitOfWork _unitOfWork;
+        public SoftDeleteUserCommandHandler(IUnitOfWork unitOfWork)
         {
-            _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
         public async Task<Result> Handle(SoftDeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(request.userId);
+            var repo = _unitOfWork.Repository<ApplicationUser, string>();
+            var user = await repo.FindByIdAsync(request.userId);
             if (user == null)
-            {
                 return Result.Failure(new Error("UserNotFound", "The user with the specified ID was not found."));
-            }
-            user.SoftDelete();
-            var result = await _userManager.UpdateAsync(user);
-            if (result.Succeeded)
-            {
-                return Result.Success();
-            }
-            else
-            {
-                var errors = string.Join("; ", result.Errors.Select(e => e.Description));
-                return Result.Failure(new Error("UserUpdateFailed", $"Failed to update user: {errors}"));
-            }
+
+            repo.Delete(user);
+
+            var result = await _unitOfWork.SaveChangesAsync();
+
+            if (result == 0)
+                return Result.Failure(Error.BadRequest("DeletionFailed"));
+
+            return Result.Success();
 
         }
     }

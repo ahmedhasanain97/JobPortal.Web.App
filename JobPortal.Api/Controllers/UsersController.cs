@@ -1,4 +1,5 @@
-﻿using JobPortal.Application.Common.Models;
+﻿using JobPortal.Api.Authorization.Attributes;
+using JobPortal.Application.Common.Models;
 using JobPortal.Application.Features.ApplicationUsers.Commands.SoftDeleteUser;
 using JobPortal.Application.Features.ApplicationUsers.Commands.UpdateUser;
 using JobPortal.Application.Features.ApplicationUsers.Queries.GetUserById;
@@ -21,6 +22,7 @@ namespace JobPortal.Api.Controllers
             _mediator = mediator;
         }
 
+        [HasPermission("Users", "Read")]
         [HttpGet]
         public async Task<ActionResult> GetUsers(int pageNumber, int pageSize)
         {
@@ -29,6 +31,8 @@ namespace JobPortal.Api.Controllers
                 return BadRequest(result);
             return Ok(result);
         }
+
+        [HasPermission("Users", "Read")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(string id)
         {
@@ -37,7 +41,7 @@ namespace JobPortal.Api.Controllers
                 return BadRequest(result);
             return Ok(result);
         }
-        [HttpGet("Role")]
+        [HttpGet("{id}/Role")]
         public async Task<IActionResult> GetUserRoleById(string id)
         {
             var result = await _mediator.Send(new GetUserRoleQuery(id));
@@ -46,7 +50,7 @@ namespace JobPortal.Api.Controllers
             return Ok(result);
         }
 
-        [Authorize("Profiles.Update")]
+        [HasPermission("Profiles", "Update")]
         [HttpPatch("UpdateProfile")]
         public async Task<IActionResult> Update([FromBody] UpdateUserDto updateUserDto)
         {
@@ -60,7 +64,7 @@ namespace JobPortal.Api.Controllers
             return Ok(result);
         }
 
-        [Authorize("Users.Delete")]
+        [HasPermission("Users", "Delete")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {

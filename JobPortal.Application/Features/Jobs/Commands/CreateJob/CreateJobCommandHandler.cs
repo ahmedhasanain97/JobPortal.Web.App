@@ -28,7 +28,7 @@ namespace JobPortal.Application.Features.Jobs.Commands.CreateJob
 
             };
 
-            var repo = _unitOfWork.Repository<Job>();
+            var repo = _unitOfWork.Repository<Job, Guid>();
             await repo.PostAsync(job);
             await _unitOfWork.SaveChangesAsync();
             return job.Id;

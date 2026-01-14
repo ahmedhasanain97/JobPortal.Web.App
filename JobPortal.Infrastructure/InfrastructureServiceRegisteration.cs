@@ -2,6 +2,7 @@
 using JobPortal.Application.Common.Interfaces;
 using JobPortal.Infrastructure.Authorization.Handlers;
 using JobPortal.Infrastructure.Authorization.Policy;
+using JobPortal.Infrastructure.Repositories;
 using JobPortal.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 
@@ -20,6 +21,7 @@ namespace JobPortal.Infrastructure
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, JwtTokenService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserRepo, UserRepo>();
 
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
