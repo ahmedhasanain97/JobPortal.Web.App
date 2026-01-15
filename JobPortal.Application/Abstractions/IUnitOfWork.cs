@@ -3,7 +3,7 @@
     public interface IUnitOfWork
     {
         Task<int> SaveChangesAsync();
-        IAsyncRepository<T, TId> Repository<T, TId>() where T : class;
+        IAsyncRepository<T> Repository<T>() where T : class;
         IUserRepo UserRepository { get; }
     }
 }

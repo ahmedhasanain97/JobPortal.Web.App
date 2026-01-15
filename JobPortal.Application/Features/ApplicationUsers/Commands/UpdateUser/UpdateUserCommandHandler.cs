@@ -1,8 +1,4 @@
-﻿using JobPortal.Domain.Entities;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
-
-namespace JobPortal.Application.Features.ApplicationUsers.Commands.UpdateUser
+﻿namespace JobPortal.Application.Features.ApplicationUsers.Commands.UpdateUser
 {
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result<UpdateUserDto>>
     {
@@ -13,7 +9,7 @@ namespace JobPortal.Application.Features.ApplicationUsers.Commands.UpdateUser
         }
         public async Task<Result<UpdateUserDto>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.Repository<ApplicationUser, string>().FindByIdAsync(request.Id);
+            var user = await _unitOfWork.Repository<ApplicationUser>().FindByIdAsync(request.Id);
             if (user == null)
                 return Result.Failure<UpdateUserDto>(Error.NotFound("User Not Found"));
 

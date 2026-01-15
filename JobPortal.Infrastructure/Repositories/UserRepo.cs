@@ -1,14 +1,8 @@
-﻿using Azure.Core;
-using JobPortal.Application.Abstractions;
-using JobPortal.Application.Common.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
+﻿using JobPortal.Application.Abstractions;
 
 namespace JobPortal.Infrastructure.Repositories
 {
-    public class UserRepo : BaseRepository<ApplicationUser, string>, IUserRepo
+    public class UserRepo : BaseRepository<ApplicationUser>, IUserRepo
     {
         private readonly AppDbContext _context;
         public UserRepo(AppDbContext context) : base(context)

@@ -9,7 +9,7 @@
         }
         public async Task<Result> Handle(SoftDeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var repo = _unitOfWork.Repository<ApplicationUser, string>();
+            var repo = _unitOfWork.Repository<ApplicationUser>();
             var user = await repo.FindByIdAsync(request.userId);
             if (user == null)
                 return Result.Failure(new Error("UserNotFound", "The user with the specified ID was not found."));

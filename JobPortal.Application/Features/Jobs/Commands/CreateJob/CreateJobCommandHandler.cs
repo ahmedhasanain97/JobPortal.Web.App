@@ -1,8 +1,4 @@
-﻿using JobPortal.Application.Abstractions;
-using JobPortal.Domain.Entities;
-using MediatR;
-
-namespace JobPortal.Application.Features.Jobs.Commands.CreateJob
+﻿namespace JobPortal.Application.Features.Jobs.Commands.CreateJob
 {
     public class CreateJobCommandHandler : IRequestHandler<CreateJobCommand, Guid>
     {
@@ -28,7 +24,7 @@ namespace JobPortal.Application.Features.Jobs.Commands.CreateJob
 
             };
 
-            var repo = _unitOfWork.Repository<Job, Guid>();
+            var repo = _unitOfWork.Repository<Job>();
             await repo.PostAsync(job);
             await _unitOfWork.SaveChangesAsync();
             return job.Id;

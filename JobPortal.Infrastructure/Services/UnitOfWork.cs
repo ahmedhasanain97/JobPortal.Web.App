@@ -11,8 +11,8 @@ namespace JobPortal.Infrastructure.Services
         public UnitOfWork(AppDbContext context)
             => _context = context;
 
-        public IAsyncRepository<T, TId> Repository<T, TId>() where T : class
-            => new BaseRepository<T, TId>(_context);
+        public IAsyncRepository<T> Repository<T>() where T : class
+            => new BaseRepository<T>(_context);
         public IUserRepo UserRepository
             => new UserRepo(_context);
 

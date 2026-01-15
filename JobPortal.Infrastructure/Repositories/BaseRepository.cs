@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace JobPortal.Infrastructure.Repositories
 {
-    public class BaseRepository<T, TId> : IAsyncRepository<T, TId> where T : class
+    public class BaseRepository<T> : IAsyncRepository<T> where T : class
     {
         private readonly DbSet<T> _dbSet;
 
@@ -128,7 +128,7 @@ namespace JobPortal.Infrastructure.Repositories
         /// </summary>
         /// <param name="id">The primary key value of the entity to retrieve.</param>
         /// <returns>The entity with the specified primary key, or null if not found.</returns>
-        public T? FindById(TId id)
+        public T? FindById<TId>(TId id)
             => _dbSet.Find(id);
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace JobPortal.Infrastructure.Repositories
         /// A task representing the asynchronous operation. The task result contains the entity with the specified primary key,
         /// or null if not found.
         /// </returns>
-        public async Task<T?> FindByIdAsync(TId id)
+        public async Task<T?> FindByIdAsync<TId>(TId id)
             => await _dbSet.FindAsync(id);
 
         /// <summary>
