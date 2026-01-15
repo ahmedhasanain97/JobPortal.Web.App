@@ -6,7 +6,6 @@ using JobPortal.Application.Features.ApplicationUsers.Queries.GetUserById;
 using JobPortal.Application.Features.ApplicationUsers.Queries.GetUserRole;
 using JobPortal.Application.Features.ApplicationUsers.Queries.GetUsers;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace JobPortal.Api.Controllers
@@ -41,6 +40,8 @@ namespace JobPortal.Api.Controllers
                 return BadRequest(result);
             return Ok(result);
         }
+
+        [HasPermission("Profiles", "Read")]
         [HttpGet("{id}/Role")]
         public async Task<IActionResult> GetUserRoleById(string id)
         {
