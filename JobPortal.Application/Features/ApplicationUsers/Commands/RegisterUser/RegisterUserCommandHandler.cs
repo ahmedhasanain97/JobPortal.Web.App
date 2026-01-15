@@ -3,10 +3,10 @@ using MediatR;
 
 namespace JobPortal.Application.Features.ApplicationUsers.Commands.RegisterUser
 {
-    public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, Result>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result>
     {
         private readonly IAuthService _authService;
-        public RegisterUserHandler(IAuthService authService)
+        public RegisterUserCommandHandler(IAuthService authService)
         {
             _authService = authService;
         }

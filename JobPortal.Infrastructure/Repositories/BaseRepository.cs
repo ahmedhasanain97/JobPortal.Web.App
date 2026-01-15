@@ -128,7 +128,7 @@ namespace JobPortal.Infrastructure.Repositories
         /// </summary>
         /// <param name="id">The primary key value of the entity to retrieve.</param>
         /// <returns>The entity with the specified primary key, or null if not found.</returns>
-        public T? FindById(int id)
+        public T? FindById<TId>(TId id)
             => _dbSet.Find(id);
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace JobPortal.Infrastructure.Repositories
         /// A task representing the asynchronous operation. The task result contains the entity with the specified primary key,
         /// or null if not found.
         /// </returns>
-        public async Task<T?> FindByIdAsync(int id)
+        public async Task<T?> FindByIdAsync<TId>(TId id)
             => await _dbSet.FindAsync(id);
 
         /// <summary>
@@ -276,20 +276,38 @@ namespace JobPortal.Infrastructure.Repositories
         #endregion
 
         #region Delete
-        public void Delete(T entity)
+        public void SoftDelete(T entity)
         {
             if (entity is null)
-                throw new ArgumentNullException(nameof(entity), "Entity cannot be null!");
+                throw new ArgumentNullException(nameof(entity));
+
+            try
+            {
+                var property = entity.GetType().GetProperty("IsDeleted");
+                if (property == null || property.PropertyType != typeof(bool))
+                    throw new InvalidOperationException("The entity does not support soft deletion.");
+
+                property.SetValue(entity, true);
+                _dbSet.Update(entity);
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DataFailureException(ex.InnerException?.Message ?? ex.Message);
+            }
+        }
+
+        public void HardDelete(T entity)
+        {
+            if (entity is null)
+                throw new ArgumentNullException(nameof(entity));
 
             try
             {
                 _dbSet.Remove(entity);
             }
-            catch (Exception ex) when (ex is DbUpdateException
-                                    || ex is InvalidOperationException
-                                    || ex is Exception)
+            catch (DbUpdateException ex)
             {
-                throw new DataFailureException(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                throw new DataFailureException(ex.InnerException?.Message ?? ex.Message);
             }
         }
         #endregion

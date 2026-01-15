@@ -4,5 +4,6 @@
     {
         Task<int> SaveChangesAsync();
         IAsyncRepository<T> Repository<T>() where T : class;
+        IUserRepo UserRepository { get; }
     }
 }
