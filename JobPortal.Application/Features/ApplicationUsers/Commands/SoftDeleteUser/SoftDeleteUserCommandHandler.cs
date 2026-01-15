@@ -1,11 +1,4 @@
-﻿using JobPortal.Domain.Entities;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace JobPortal.Application.Features.ApplicationUsers.Commands.SoftDeleteUser
+﻿namespace JobPortal.Application.Features.ApplicationUsers.Commands.SoftDeleteUser
 {
     public class SoftDeleteUserCommandHandler : IRequestHandler<SoftDeleteUserCommand, Result>
     {
@@ -21,7 +14,7 @@ namespace JobPortal.Application.Features.ApplicationUsers.Commands.SoftDeleteUse
             if (user == null)
                 return Result.Failure(new Error("UserNotFound", "The user with the specified ID was not found."));
 
-            repo.Delete(user);
+            repo.SoftDelete(user);
 
             var result = await _unitOfWork.SaveChangesAsync();
 

@@ -276,22 +276,34 @@ namespace JobPortal.Infrastructure.Repositories
         #endregion
 
         #region Delete
-        public void Delete(T entity)
+        public void SoftDelete(T entity)
         {
             if (entity is null)
                 throw new ArgumentNullException(nameof(entity));
 
             try
             {
-                if (entity is AuditableEntity auditableEntity)
-                {
-                    auditableEntity.SoftDelete();
-                    _dbSet.Update(entity);
-                }
-                else
-                {
-                    _dbSet.Remove(entity);
-                }
+                var property = entity.GetType().GetProperty("IsDeleted");
+                if (property == null || property.PropertyType != typeof(bool))
+                    throw new InvalidOperationException("The entity does not support soft deletion.");
+
+                property.SetValue(entity, true);
+                _dbSet.Update(entity);
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DataFailureException(ex.InnerException?.Message ?? ex.Message);
+            }
+        }
+
+        public void HardDelete(T entity)
+        {
+            if (entity is null)
+                throw new ArgumentNullException(nameof(entity));
+
+            try
+            {
+                _dbSet.Remove(entity);
             }
             catch (DbUpdateException ex)
             {

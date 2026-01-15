@@ -133,7 +133,8 @@ namespace JobPortal.Application.Abstractions
         #endregion
 
         #region Delete
-        void Delete(T entity);
+        void SoftDelete(T entity);
+        void HardDelete(T entity);
         #endregion
 
         #region Attach

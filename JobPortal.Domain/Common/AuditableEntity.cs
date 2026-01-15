@@ -7,19 +7,5 @@
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime? DeletedAt { get; set; }
-
-        public void SoftDelete()
-        {
-            if (IsDeleted) return;
-
-            IsDeleted = true;
-            DeletedAt = DateTime.UtcNow;
-        }
-
-        public void Restore()
-        {
-            IsDeleted = false;
-            DeletedAt = null;
-        }
     }
 }
