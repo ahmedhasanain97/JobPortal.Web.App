@@ -15,6 +15,8 @@ namespace JobPortal.Infrastructure.Services
             => new BaseRepository<T>(_context);
         public IUserRepo UserRepository
             => new UserRepo(_context);
+        public IJobSeekerProfileRepo JobSeekerProfileRepository
+            => new JobSeekerProfileRepo(_context);
 
         public async Task<int> SaveChangesAsync()
         {

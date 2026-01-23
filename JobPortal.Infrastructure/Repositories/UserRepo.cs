@@ -19,5 +19,14 @@ namespace JobPortal.Infrastructure.Repositories
                 user.LastName = lastName;
 
         }
+        public IQueryable<ApplicationUser> GetUsersByRole(string roleName)
+        {
+            var query = from user in _context.Users
+                        join userRole in _context.UserRoles on user.Id equals userRole.UserId
+                        join role in _context.Roles on userRole.RoleId equals role.Id
+                        where role.Name == roleName
+                        select user;
+            return query.AsNoTracking();
+        }
     }
 }
