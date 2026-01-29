@@ -8,3 +8,4 @@ global using Serilog.Sinks.MSSqlServer;
 global using System.Data;
 global using Serilog.Context;
 global using JobPortal.Api.Filters;
+global using MediatR;

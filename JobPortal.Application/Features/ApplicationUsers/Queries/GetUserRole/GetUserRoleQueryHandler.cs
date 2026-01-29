@@ -4,11 +4,10 @@ namespace JobPortal.Application.Features.ApplicationUsers.Queries.GetUserRole
 {
     public class GetUserRoleQueryHandler : IRequestHandler<GetUserRoleQuery, Result<UserRoleDto>>
     {
-        private readonly IUnitOfWork _unitOfWork;
+
         private readonly UserManager<ApplicationUser> _userManager;
-        public GetUserRoleQueryHandler(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
+        public GetUserRoleQueryHandler(UserManager<ApplicationUser> userManager)
         {
-            _unitOfWork = unitOfWork;
             _userManager = userManager;
         }
 

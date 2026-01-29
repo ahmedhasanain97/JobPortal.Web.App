@@ -5,6 +5,7 @@ using JobPortal.Application.Features.ApplicationUsers.Commands.UpdateUser;
 using JobPortal.Application.Features.ApplicationUsers.Queries.GetUserById;
 using JobPortal.Application.Features.ApplicationUsers.Queries.GetUserRole;
 using JobPortal.Application.Features.ApplicationUsers.Queries.GetUsers;
+using JobPortal.Application.Features.ApplicationUsers.Queries.GetUsersByRole;
 using MediatR;
 using System.Security.Claims;
 
@@ -30,6 +31,15 @@ namespace JobPortal.Api.Controllers
                 return BadRequest(result);
             return Ok(result);
         }
+        [HasPermission("Users", "Read")]
+        [HttpGet("Users/{role}")]
+        public async Task<ActionResult> GetUsersByRole(string role, int pageNumber, int pageSize)
+        {
+            var result = await _mediator.Send(new GetUsersByRoleQuery(role, pageNumber, pageSize));
+            if (result.IsFailure)
+                return BadRequest(result);
+            return Ok(result);
+        }
 
         [HasPermission("Users", "Read")]
         [HttpGet("{id}")]
@@ -41,7 +51,7 @@ namespace JobPortal.Api.Controllers
             return Ok(result);
         }
 
-        [HasPermission("Profiles", "Read")]
+        [HasPermission("Users", "Read")]
         [HttpGet("{id}/Role")]
         public async Task<IActionResult> GetUserRoleById(string id)
         {
@@ -51,14 +61,13 @@ namespace JobPortal.Api.Controllers
             return Ok(result);
         }
 
-        [HasPermission("Profiles", "Update")]
-        [HttpPatch("UpdateProfile")]
-        public async Task<IActionResult> Update([FromBody] UpdateUserDto updateUserDto)
+        [HasPermission("Users", "Update")]
+        [HttpPatch("UpdateUser / {id}")]
+        public async Task<IActionResult> Update(string userId, string firstName, string lastName)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
-            var result = await _mediator.Send(new UpdateUserCommand(userId, updateUserDto.FirstName, updateUserDto.LastName));
+            var result = await _mediator.Send(new UpdateUserCommand(userId, firstName, lastName));
             if (result.IsFailure)
                 return BadRequest(result);
 

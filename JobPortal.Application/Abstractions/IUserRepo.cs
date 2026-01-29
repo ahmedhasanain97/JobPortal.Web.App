@@ -3,5 +3,6 @@
     public interface IUserRepo : IAsyncRepository<ApplicationUser>
     {
         void UpdateUserAsync(ApplicationUser user, string firstName, string lastName);
+        IQueryable<ApplicationUser> GetUsersByRole(string roleName);
     }
 }
