@@ -10,7 +10,7 @@ namespace JobPortal.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task UpdateJobSeekerProfileRepo(UpdateJobSeekerProfileDto updateJobSeekerProfileDto)
+        public async Task UpdateJobSeekerProfile(UpdateJobSeekerProfileDto updateJobSeekerProfileDto)
         {
             var updateuser = await _context.Users.FindAsync(updateJobSeekerProfileDto.UserId);
             if (updateJobSeekerProfileDto == null)

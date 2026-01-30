@@ -2,6 +2,6 @@
 {
     public interface IJobSeekerProfileRepo : IAsyncRepository<ApplicationUser>
     {
-        Task UpdateJobSeekerProfileRepo(UpdateJobSeekerProfileDto updateJobSeekerProfileDto);
+        Task UpdateJobSeekerProfile(UpdateJobSeekerProfileDto updateJobSeekerProfileDto);
     }
 }
