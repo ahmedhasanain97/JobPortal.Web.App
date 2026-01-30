@@ -19,7 +19,7 @@ namespace JobPortal.Application.Features.JobSeekerProfiles.Commands.UpdateJobSee
                 CVURL = request.cvURL,
                 SkillSet = request.skillset
             };
-            await _unitOfWork.JobSeekerProfileRepository.UpdateJobSeekerProfileRepo(dto);
+            await _unitOfWork.JobSeekerProfileRepository.UpdateJobSeekerProfile(dto);
 
             var result = await _unitOfWork.SaveChangesAsync();
 
