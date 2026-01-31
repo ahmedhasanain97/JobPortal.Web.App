@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+﻿using JobPortal.Application.Common.Behaviours;
 using JobPortal.Application.Features.ApplicationUsers.Commands.RegisterUser;
 using JobPortal.Application.Features.Jobs.Commands.CreateJob;
 using System.Reflection;
@@ -21,6 +21,10 @@ namespace JobPortal.Application
             #region Fluent Validation
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             #endregion
+            services.AddTransient(
+               typeof(IPipelineBehavior<,>),
+               typeof(ValidationBehaviour<,>)
+);
             return services;
         }
     }

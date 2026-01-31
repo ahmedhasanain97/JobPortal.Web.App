@@ -8,10 +8,10 @@ namespace JobPortal.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployerProfile : ControllerBase
+    public class EmployerProfileController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public EmployerProfile(IMediator mediator)
+        public EmployerProfileController(IMediator mediator)
         {
             _mediator = mediator;
         }
