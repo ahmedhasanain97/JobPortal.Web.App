@@ -1,6 +1,8 @@
 ﻿using JobPortal.Api.Authorization.Attributes;
+using JobPortal.Api.Requests;
 using JobPortal.Application.Common.Models;
 using JobPortal.Application.Features.Jobs.Commands.CreateJob;
+using JobPortal.Application.Features.Jobs.Commands.UpdateJob;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -39,6 +41,29 @@ namespace JobPortal.Api.Controllers
             if (result.IsFailure)
                 return BadRequest(result);
             return Ok(result);
+        }
+        [HttpPut("{id}")]
+        [HasPermission("Jobs", "Update")]
+        public async Task<IActionResult> UpdateJob(Guid id, [FromBody] UpdateJobRequest updateJobRequest)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var request = new UpdateJobCommand(
+                id,
+                updateJobRequest.Title,
+                updateJobRequest.Description,
+                updateJobRequest.JobLocation,
+                updateJobRequest.JobType,
+                updateJobRequest.ExperienceLevel,
+                updateJobRequest.SalaryFrom,
+                updateJobRequest.SalaryTo,
+                updateJobRequest.ApplicationDeadline,
+                userId
+                );
+            var result = await _mediator.Send(request);
+            if (result.IsFailure)
+                return BadRequest(result);
+            return Ok(result);
+
         }
     }
 }

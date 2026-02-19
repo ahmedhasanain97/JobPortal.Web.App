@@ -21,6 +21,9 @@
             };
             await repo.UpdateEmployerProfile(dto);
             var result = await _unitOfWork.SaveChangesAsync();
+            if (result <= 0)
+                return Result.Failure<UpdateEmployerProfileDto>(Error.BadRequest("Failed To Update Profile"));
+
             return Result.Success(dto);
         }
     }

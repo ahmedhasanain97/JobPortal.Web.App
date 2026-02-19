@@ -7,5 +7,6 @@
         IUserRepo UserRepository { get; }
         IJobSeekerProfileRepo JobSeekerProfileRepository { get; }
         IEmployerProfileRepo EmployerProfileRepository { get; }
+        IJobRepo JobRepository { get; }
     }
 }
