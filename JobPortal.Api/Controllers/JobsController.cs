@@ -4,6 +4,7 @@ using JobPortal.Application.Common.Models;
 using JobPortal.Application.Features.Jobs.Commands.CreateJob;
 using JobPortal.Application.Features.Jobs.Commands.SoftDeleteJob;
 using JobPortal.Application.Features.Jobs.Commands.UpdateJob;
+using JobPortal.Application.Features.Jobs.Queries.GetJobById;
 using System.Security.Claims;
 
 namespace JobPortal.Api.Controllers
@@ -65,9 +66,19 @@ namespace JobPortal.Api.Controllers
 
         }
 
+        [HasPermission("Jobs", "Read")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetJobById(Guid id)
+        {
+            var result = await _mediator.Send(new GetJobByIdQuery(id));
+            if (result.IsFailure)
+                return BadRequest(result);
+            return Ok(result);
+        }
+
         [HasPermission("Jobs", "Delete")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(Guid id)
+        public async Task<IActionResult> DeleteJob(Guid id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = await _mediator.Send(new SoftDeleteJobCommand(id, userId));
