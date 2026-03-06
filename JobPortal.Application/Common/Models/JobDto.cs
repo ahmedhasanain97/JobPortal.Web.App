@@ -4,6 +4,7 @@ namespace JobPortal.Application.Common.Models
 {
     public class JobDto
     {
+        public Guid? Id { get; set; }
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public JobLocation JobLocation { get; set; }
