@@ -1,12 +1,30 @@
 using JobPortal.Api.Middlewares;
+using JobPortal.Application.Common.Models;
+using Microsoft.AspNetCore.OData;
+using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi;
 
-var builder = WebApplication.CreateBuilder(args);
 
+var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<LogRequestFilter>();
+})
+.AddOData(options =>
+{
+    var odataBuilder = new ODataConventionModelBuilder();
+
+    odataBuilder.EntitySet<JobDto>("Jobs");
+
+    options
+        .AddRouteComponents("odata", odataBuilder.GetEdmModel())
+        .Filter()
+        .Select()
+        .OrderBy()
+        .Expand()
+        .Count()
+        .SetMaxTop(100);
 });
 
 builder.Services.AddEndpointsApiExplorer();

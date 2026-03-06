@@ -81,11 +81,17 @@ namespace JobPortal.Api.Middlewares
                     };
                     break;
             }
+            if (!context.Response.HasStarted)
+            {
+                context.Response.StatusCode = statusCode;
+                context.Response.ContentType = "application/json";
 
-            context.Response.StatusCode = statusCode;
-            context.Response.ContentType = "application/json";
-
-            await context.Response.WriteAsJsonAsync(response);
+                await context.Response.WriteAsJsonAsync(response);
+            }
+            else
+            {
+                Log.Warning("Response already started. Cannot write error response for traceId {0}", traceId);
+            }
         }
     }
 }

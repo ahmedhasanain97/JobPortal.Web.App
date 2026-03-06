@@ -5,6 +5,8 @@ using JobPortal.Application.Features.Jobs.Commands.CreateJob;
 using JobPortal.Application.Features.Jobs.Commands.SoftDeleteJob;
 using JobPortal.Application.Features.Jobs.Commands.UpdateJob;
 using JobPortal.Application.Features.Jobs.Queries.GetJobById;
+using JobPortal.Application.Features.Jobs.Queries.GetJobQuery;
+using Microsoft.AspNetCore.OData.Query;
 using System.Security.Claims;
 
 namespace JobPortal.Api.Controllers
@@ -86,6 +88,14 @@ namespace JobPortal.Api.Controllers
                 return BadRequest(result);
 
             return Ok(result);
+        }
+
+        //[HasPermission("Jobs", "Read")]
+        [EnableQuery]
+        [HttpGet("FilterJob")]
+        public async Task<IQueryable<JobDto>> GetAsync()
+        {
+            return await _mediator.Send(new GetJobsQuery());
         }
     }
 }
