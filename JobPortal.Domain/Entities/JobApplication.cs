@@ -6,7 +6,7 @@
         public Job Job { get; set; } = null!;
         public Guid JobId { get; set; }
         public ApplicationUser ApplicationUser { get; set; } = null!;
-        public String ApplciationUserId { get; set; }
+        public String ApplicationUserId { get; set; }
         public DateTime ApplicationDate { get; set; }
         public ApplicationStatus Status { get; set; }
 

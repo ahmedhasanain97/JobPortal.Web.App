@@ -23,6 +23,7 @@ namespace JobPortal.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IJobSeekerProfileRepo, JobSeekerProfileRepo>();
+            services.AddScoped<IJobApplicationRepo, JobApplicationRepo>();
 
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
