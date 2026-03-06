@@ -21,7 +21,8 @@ namespace JobPortal.Infrastructure.Services
             => new EmployerProfileRepo(_context);
         public IJobRepo JobRepository
             => new JobRepo(_context);
-
+        public IJobApplicationRepo JobApplicationRepository
+            => new JobApplicationRepo(_context);
         public async Task<int> SaveChangesAsync()
         {
             try
@@ -31,7 +32,8 @@ namespace JobPortal.Infrastructure.Services
             }
             catch (Exception ex) when (ex is DbUpdateException)
             {
-                throw new DataFailureException(ex.Message);
+                throw new DataFailureException($"An error occurd while processing your request, ErrorDescription= {ex.InnerException?.Message ?? ex.Message}");
+
             }
         }
     }
