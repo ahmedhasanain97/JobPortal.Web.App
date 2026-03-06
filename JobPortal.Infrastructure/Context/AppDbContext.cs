@@ -10,7 +10,6 @@ namespace JobPortal.Infrastructure.Context
 
         public DbSet<Job> Jobs => Set<Job>();
         public DbSet<JobSkillSet> JobsSkillSet => Set<JobSkillSet>();
-        public DbSet<JobApplication> JobApplications => Set<JobApplication>();
         public DbSet<Log> Logs { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<RoleAccessModule> RoleAccessModules { get; set; }
