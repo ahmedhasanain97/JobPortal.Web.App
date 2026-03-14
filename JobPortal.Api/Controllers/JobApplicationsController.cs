@@ -1,4 +1,5 @@
-﻿using JobPortal.Application.Features.JobApplications.Commands;
+﻿using JobPortal.Api.Authorization.Attributes;
+using JobPortal.Application.Features.JobApplications.Commands;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -14,6 +15,8 @@ namespace JobPortal.Api.Controllers
         {
             _mediator = mediator;
         }
+
+        [HasPermission("Applications", "Write")]
         [HttpPost("Apply")]
         public async Task<IActionResult> ApplyToJob(Guid jobId)
         {
