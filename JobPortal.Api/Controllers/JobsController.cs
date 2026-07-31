@@ -7,6 +7,7 @@ using JobPortal.Application.Features.Jobs.Commands.UpdateJob;
 using JobPortal.Application.Features.Jobs.Queries.GetJobById;
 using JobPortal.Application.Features.Jobs.Queries.GetJobQuery;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Query.Validator;
 using System.Security.Claims;
 
 namespace JobPortal.Api.Controllers
@@ -91,11 +92,20 @@ namespace JobPortal.Api.Controllers
         }
 
         //[HasPermission("Jobs", "Read")]
-        [EnableQuery]
-        [HttpGet("FilterJob")]
-        public async Task<IQueryable<JobDto>> GetAsync()
+        [HttpGet]
+        public async Task<IActionResult> Get(
+            ODataQueryOptions<JobDto> options)
         {
-            return await _mediator.Send(new GetJobsQuery());
+            var query = await _mediator.Send(new GetJobsQuery());
+
+            options.Validate(new ODataValidationSettings
+            {
+                MaxTop = 20
+            });
+
+            var result = options.ApplyTo(query);
+
+            return Ok(result);
         }
     }
 }
