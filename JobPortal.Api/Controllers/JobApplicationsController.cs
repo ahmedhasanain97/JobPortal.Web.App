@@ -1,7 +1,6 @@
 ﻿using JobPortal.Api.Authorization.Attributes;
 using JobPortal.Application.Features.JobApplications.Commands;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using JobPortal.Application.Features.JobApplications.Queries.GetMyApplications;
 using System.Security.Claims;
 
 namespace JobPortal.Api.Controllers
@@ -24,6 +23,20 @@ namespace JobPortal.Api.Controllers
             if (string.IsNullOrEmpty(jobSeekerId))
                 return Unauthorized();
             var result = await _mediator.Send(new ApplyForJobCommand(jobSeekerId, jobId));
+            if (result.IsFailure)
+                return BadRequest(result);
+            return Ok(result);
+        }
+
+
+        [HasPermission("Applications", "Read")]
+        [HttpGet("MyApplications")]
+        public async Task<IActionResult> GetMyApplications(int pageNumber)
+        {
+            var jobSeekerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(jobSeekerId))
+                return Unauthorized();
+            var result = await _mediator.Send(new GetMyApplicationsQuery(jobSeekerId, pageNumber));
             if (result.IsFailure)
                 return BadRequest(result);
             return Ok(result);
