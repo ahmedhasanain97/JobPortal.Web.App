@@ -1,8 +1,5 @@
 ﻿using JobPortal.Application.Extensions;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace JobPortal.Application.Features.JobApplications.Queries.GetMyApplications
 {
@@ -30,7 +27,7 @@ namespace JobPortal.Application.Features.JobApplications.Queries.GetMyApplicatio
             if (!paginatedQuery.Items.Any())
                 return Result.Failure<PaginatedResult<JobApplication>>(Error.NotFound("No Data to Show"));
 
-            return Result.Success(paginatedQuery); throw new NotImplementedException();
+            return Result.Success(paginatedQuery);
         }
     }
 }
