@@ -1,13 +1,10 @@
 ﻿using JobPortal.Api.Authorization.Attributes;
-using JobPortal.Application.Common.Models;
 using JobPortal.Application.Features.ApplicationUsers.Commands.SoftDeleteUser;
 using JobPortal.Application.Features.ApplicationUsers.Commands.UpdateUser;
 using JobPortal.Application.Features.ApplicationUsers.Queries.GetUserById;
 using JobPortal.Application.Features.ApplicationUsers.Queries.GetUserRole;
 using JobPortal.Application.Features.ApplicationUsers.Queries.GetUsers;
 using JobPortal.Application.Features.ApplicationUsers.Queries.GetUsersByRole;
-using MediatR;
-using System.Security.Claims;
 
 namespace JobPortal.Api.Controllers
 {
@@ -24,7 +21,7 @@ namespace JobPortal.Api.Controllers
 
         [HasPermission("Users", "Read")]
         [HttpGet]
-        public async Task<ActionResult> GetUsers(int pageNumber, int pageSize)
+        public async Task<ActionResult> GetUsers(int pageNumber = 1, int pageSize = 1)
         {
             var result = await _mediator.Send(new GetUsersQuery(pageNumber, pageSize));
             if (result.IsFailure)
