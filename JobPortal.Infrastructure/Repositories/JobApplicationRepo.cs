@@ -27,5 +27,16 @@ namespace JobPortal.Infrastructure.Repositories
             };
             await _context.JobApplications.AddAsync(jobApplication);
         }
+
+        public async Task UpdateApplicationStatus(Guid applicationId, ApplicationStatus newStatus)
+        {
+            var application = _context.JobApplications.FirstOrDefault(x => x.Id == applicationId);
+            if (application != null)
+            {
+                application.Status = newStatus;
+                _context.JobApplications.Update(application);
+            }
+            await _context.SaveChangesAsync();
+        }
     }
 }

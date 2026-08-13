@@ -1,7 +1,10 @@
 ﻿using JobPortal.Api.Authorization.Attributes;
 using JobPortal.Application.Features.JobApplications.Commands;
+using JobPortal.Application.Features.JobApplications.Commands.UpdateApplicationStatus;
+using JobPortal.Application.Features.JobApplications.Queries.GetApplication;
 using JobPortal.Application.Features.JobApplications.Queries.GetMyApplications;
 using JobPortal.Application.Features.JobApplications.Queries.ListApplicationsPerJob;
+using JobPortal.Domain.Enums;
 using System.Security.Claims;
 
 namespace JobPortal.Api.Controllers
@@ -49,6 +52,32 @@ namespace JobPortal.Api.Controllers
         public async Task<IActionResult> ListJobApplications(Guid jobId, int pageNumber = 1)
         {
             var result = await _mediator.Send(new ListApplicationsPerJobQuery(jobId, pageNumber));
+            if (result.IsFailure)
+                return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HasPermission("Applications", "Read")]
+        [HttpGet("Review")]
+        public async Task<IActionResult> GetApplication(Guid applicationId)
+        {
+            var employerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(employerId))
+                return Unauthorized();
+            var result = await _mediator.Send(new GetApplicationQuery(applicationId, employerId));
+            if (result.IsFailure)
+                return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HasPermission("Applications", "Update")]
+        [HttpGet("UpdateStatus")]
+        public async Task<IActionResult> UpdateApplicationStatus(Guid applicationId, ApplicationStatus newStatus)
+        {
+            var employerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(employerId))
+                return Unauthorized();
+            var result = await _mediator.Send(new UpdateApplicationStatusCommand(applicationId, employerId, newStatus));
             if (result.IsFailure)
                 return BadRequest(result);
             return Ok(result);
