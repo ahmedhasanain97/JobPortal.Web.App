@@ -176,6 +176,22 @@ namespace JobPortal.Infrastructure.Repositories
         }
 
         /// <summary>
+        /// Asynchronously retrieves a single entity from a table based on the specified predicate, with optional inclusion of navigation properties and including Deleted Entities.
+        /// </summary>
+        /// <param name="predicate">The predicate used to filter the entity.</param>
+        /// <param name="includeNavigationProperties">Optional delegate to include navigation properties in the query.</param>
+        /// <returns>A task representing the asynchronous operation. The task result contains the entity matching the predicate, or null if not found.</returns>
+        public async Task<T?> FindIncludingDeletedAsync(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>>? includeNavigationProperties = null)
+        {
+            IQueryable<T> query = _dbSet.IgnoreQueryFilters();
+
+            if (includeNavigationProperties != null)
+                query = includeNavigationProperties(query);
+
+            return await query.FirstOrDefaultAsync(predicate);
+        }
+
+        /// <summary>
         /// Checks if any entities in the database context satisfy the specified predicate.
         /// </summary>
         /// <param name="predicate">A predicate to match entities against.</param>
@@ -274,7 +290,23 @@ namespace JobPortal.Infrastructure.Repositories
             }
         }
         #endregion
-
+        #region Update
+        public void Update(T entity)
+        {
+            if (entity is null)
+                throw new ArgumentNullException(nameof(entity), "Entity cannot be null!");
+            try
+            {
+                _dbSet.Update(entity);
+            }
+            catch (Exception ex) when (ex is DbUpdateException
+                                    || ex is InvalidOperationException
+                                    || ex is Exception)
+            {
+                throw new DataFailureException(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+            }
+        }
+        #endregion
         #region Delete
         public void SoftDelete(T entity)
         {

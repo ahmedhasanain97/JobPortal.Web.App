@@ -91,6 +91,14 @@ namespace JobPortal.Application.Abstractions
         Task<T?> FindAsync(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>>? includeNavigationProperties = null);
 
         /// <summary>
+        /// Asynchronously retrieves a single entity from a table based on the specified predicate, with optional inclusion of navigation properties and including Deleted Entities.
+        /// </summary>
+        /// <param name="predicate">The predicate used to filter the entity.</param>
+        /// <param name="includeNavigationProperties">Optional delegate to include navigation properties in the query.</param>
+        /// <returns>A task representing the asynchronous operation. The task result contains the entity matching the predicate, or null if not found.</returns>
+        Task<T?> FindIncludingDeletedAsync(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>>? includeNavigationProperties = null);
+
+        /// <summary>
         /// Checks if any entities in the database context satisfy the specified predicate.
         /// </summary>
         /// <param name="predicate">A predicate to match entities against.</param>
@@ -130,6 +138,9 @@ namespace JobPortal.Application.Abstractions
 
         #region Post
         Task<T> PostAsync(T entity);
+        #endregion
+        #region Update
+        void Update(T entity);
         #endregion
 
         #region Delete
